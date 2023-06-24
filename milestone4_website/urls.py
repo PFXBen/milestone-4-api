@@ -23,6 +23,7 @@ import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("accounts/", include("django.contrib.auth.urls")),  # new
     path("users/", include("users.urls")),
     path("products/", include("products.urls")),
     path("orders/", include("orders.urls")),
