@@ -1,29 +1,36 @@
 import json
 import os
-import site
+import stripe
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
-import stripe
+from django.views.decorators.csrf import csrf_exempt
+from orders.models import Order
+from products.models import Product
 
 # Create your views here.
 
-# new
+@csrf_exempt  
 def stripe_config(request):
     if request.method == 'GET':
         stripe_config = {'publicKey': os.getenv('STRIPE_PUBLISHABLE_KEY')}
         return JsonResponse(stripe_config, safe=False)
     
+@csrf_exempt    
 def create_checkout_session(request):
     if request.method == 'POST':
-        current_site = site.objects.get_current()
-        domain_url = current_site.domain
+        domain_url = request.build_absolute_uri('/')[:-1]
         print(domain_url)
         try:
 
             #Info on purchases bought
+            print(request.body)
             body_unicode = request.body.decode('utf-8')
-            body = json.loads(body_unicode)                    
+            body = json.loads(body_unicode)     
+            items = []
+            for x in body:
+                items.append(x)
+            print(items)               
 
 
             # Create new Checkout Session for the order
@@ -36,16 +43,24 @@ def create_checkout_session(request):
 
             # ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
             checkout_session = stripe.checkout.Session.create(
-                success_url=domain_url + 'success?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url=domain_url + 'cancelled/',
+                success_url=domain_url + '/orders/success/',
+                cancel_url=domain_url + '/orders/cancelled/',
                 payment_method_types=['card'],
                 mode='payment',
-                line_items=body
+                line_items=items,
+                billing_address_collection='required',
+                customer_creation='always',
+                phone_number_collection={
+                    'enabled':True
+                },
+                invoice_creation={
+                    'enabled':True
+                }
             )
             return JsonResponse({'sessionId': checkout_session['id']})
         except Exception as e:
             return JsonResponse({'error': str(e)})
-        
+@csrf_exempt
 def stripe_webhook(request):
     endpoint_secret = os.getenv("STRIPE_ENDPOINT_SECRET")
     payload = request.body
@@ -64,7 +79,13 @@ def stripe_webhook(request):
         return HttpResponse(status=400)
 
     # Handle the checkout.session.completed event
-    if event['type'] == 'checkout.session.completed':
+    if event['type'] == 'invoice.payment_succeeded':
+        print(event)
+        print(payment_intent)
+        #stripe.PaymentIntent.get(event['data']['object']['id'])
+        #payment_intent = event['data']['id']
+        #product = Product.objects.get(stripe_id = product_bought)
+        #Order.objects.create_order(1,product,event['id'],)
         print("Payment was successful.")
         # TODO: run some custom code here
 
