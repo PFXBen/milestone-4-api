@@ -17,6 +17,9 @@ Including another URLconf
 from django import views
 from django.contrib import admin
 from django.urls import include, path
+from django.conf.urls.static import static
+
+import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,3 +28,5 @@ urlpatterns = [
     path("orders/", include("orders.urls")),
     path('', include("home.urls"))
 ]
+#static
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -4,26 +4,32 @@ import site
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
+from django.views.decorators.csrf import csrf_exempt
 import stripe
 
 # Create your views here.
 
-# new
+@csrf_exempt  
 def stripe_config(request):
     if request.method == 'GET':
         stripe_config = {'publicKey': os.getenv('STRIPE_PUBLISHABLE_KEY')}
         return JsonResponse(stripe_config, safe=False)
     
+@csrf_exempt    
 def create_checkout_session(request):
     if request.method == 'POST':
-        current_site = site.objects.get_current()
-        domain_url = current_site.domain
+        domain_url = request.build_absolute_uri('/')[:-1]
         print(domain_url)
         try:
 
             #Info on purchases bought
+            print(request.body)
             body_unicode = request.body.decode('utf-8')
-            body = json.loads(body_unicode)                    
+            body = json.loads(body_unicode)     
+            items = []
+            for x in body:
+                items.append(x)
+            print(items)               
 
 
             # Create new Checkout Session for the order
@@ -36,11 +42,11 @@ def create_checkout_session(request):
 
             # ?session_id={CHECKOUT_SESSION_ID} means the redirect will have the session ID set as a query param
             checkout_session = stripe.checkout.Session.create(
-                success_url=domain_url + 'success?session_id={CHECKOUT_SESSION_ID}',
-                cancel_url=domain_url + 'cancelled/',
+                success_url=domain_url + '/orders/success/',
+                cancel_url=domain_url + '/orders/cancelled/',
                 payment_method_types=['card'],
                 mode='payment',
-                line_items=body
+                line_items=items
             )
             return JsonResponse({'sessionId': checkout_session['id']})
         except Exception as e:
