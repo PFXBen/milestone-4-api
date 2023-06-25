@@ -10,6 +10,7 @@ class User(AbstractUser):
     address_2 = models.TextField(default=None,blank=True, null=True)
     address_city = models.TextField(default=None,blank=True, null=True)
     address_country = models.TextField(default=None,blank=True, null=True)
+    address_postal = models.TextField(default=None,blank=True, null=True)
     phone = models.TextField(default=None,blank=True, null=True)
     stripe_customer_id = models.TextField(default=None,blank=True, null=True)
 

@@ -4,8 +4,8 @@ from users.models import User
 
 # Create your models here.
 class OrderManager(models.Manager):
-    def create_order(self, user_id,product_id,stripe_event_id,quantity):
-        order = self.create(user=user_id,product=product_id,stripe_event_id=stripe_event_id,quantity=quantity)
+    def create_order(self, user,product,stripe_invoice_id,quantity):
+        order = self.create(user=user,product=product,stripe_invoice_id=stripe_invoice_id,quantity=quantity)
         # do something with the book
         return order
 
