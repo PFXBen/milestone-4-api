@@ -13,6 +13,16 @@ To get started with the API, follow the instructions below:
 - PostgreSQL or MySQL (or any other supported database)
 - Stripe CLI
 
+### Required .env variables (to be set locally and in heroku)
+- DB_NAME
+- DB_USER
+- DB_PASSWORD
+- DB_HOSTNAME
+- DB_PORT
+- STRIPE_PUBLISHABLE_KEY
+- STRIPE_SECRET_KEY
+- STRIPE_ENDPOINT_SECRET
+
 ### Installation
 
 1. Clone this repository to your local machine or download the source code as a ZIP file.
