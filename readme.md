@@ -112,6 +112,36 @@ curl -X
  GET http://localhost:5000/api/users
 ```
 
+When using the ```/orders/create-checkout-session/``` POST route, a body needs to be supplied. This body should consist of a string, which includes and array of the format ```{"price":<stripe_price_id>,"quantity":<number_of_that_item_ordered>}```. The stripe price id can be fetched by querying for more info for a product, or form the get all products routes, ```/products/<product_id>/``` or ```/products/all/```.
+An example of an individual product is below:
+```
+{
+    "id": "prod_O8TmZUd3kcvjen",
+    "object": "product",
+    "active": true,
+    "attributes": [],
+    "created": 1687537603,
+    "default_price": "price_1NMCoqBbL1wWy0xHQg7EtitO",
+    "description": "Simple print of the Queer Bros",
+    "images": [
+        "https://files.stripe.com/links/MDB8YWNjdF8xTk1BQ0dCYkwxd1d5MHhIfGZsX3Rlc3RfTEUwdHNKNjJGakhNeHhIMHo3QlJVNnVt00bXvMk2MV"
+    ],
+    "livemode": false,
+    "metadata": {},
+    "name": "Queer Bros Print",
+    "package_dimensions": null,
+    "shippable": null,
+    "statement_descriptor": null,
+    "tax_code": null,
+    "type": "service",
+    "unit_label": null,
+    "updated": 1687537604,
+    "url": null,
+    "stock_left": 48,
+    "price": "6.99"
+}
+```
+
 ## Authentication
 
 The API may use various authentication mechanisms depending on the project's configuration. Please refer to the project's documentation or code to determine the specific authentication requirements for accessing protected endpoints.
