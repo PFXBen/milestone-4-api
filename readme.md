@@ -88,7 +88,7 @@ This command sets up the Stripe CLI to listen for webhook events and forwards th
 
 4. Copy the webhook signing secret provided by the Stripe CLI.
 
-5. In your Django project, open the `settings.py` file and paste the webhook signing secret in the appropriate location.
+5. In your Django project, open the `.env` file and paste the webhook signing secret in the appropriate location.
 
 ```python
 STRIPE_WEBHOOK_SECRET = 'your_webhook_signing_secret'
