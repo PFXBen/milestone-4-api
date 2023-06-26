@@ -50,9 +50,11 @@ source env/bin/activate
 pip install -r requirements.txt
 ```
 
-5. Configure the API.
+5. CD into the milestone4_website directory.
 
-   - Open the `settings.py` file and provide the necessary configuration values, such as the database settings and secret key.
+```
+cd milestone4_website
+```
 
 6. Run database migrations.
 
