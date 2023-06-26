@@ -25,7 +25,7 @@ To get started with the API, follow the instructions below:
 
 ### Installation
 
-1. Clone this repository to your local machine or download the source code as a ZIP file.
+1. Clone this repository to your local machine or download the source code as a ZIP file. DO NOT CHANGE THE FILESTRUCTURE, DJANGO HATES THINGS MOVING AND ITS A PAIN TO FIX (I speak from experience)
 
 ```shell
 git clone https://github.com/PFXBen/milestone-4-api.git
