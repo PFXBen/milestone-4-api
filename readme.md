@@ -98,7 +98,11 @@ STRIPE_WEBHOOK_SECRET = 'your_webhook_signing_secret'
 
 Replace `'your_webhook_signing_secret'` with the actual webhook signing secret provided by the Stripe CLI.
 
-
+## Editing images/JS/CSS
+Any js/css/images for the site should go in a ```static``` folder in each individual application, e.g. ```orders/static```. Then before running django to preview changes, you MUST run the following to copy into the staticfiles directory at a project root level
+```
+ python manage.py collectstatic
+```
 
 ## API Endpoints
 
